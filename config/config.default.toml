@@ -1,0 +1,12 @@
+ListenAddr = "localhost:8080"
+
+[LogX]
+Development = true
+Level = "DEBUG"
+
+[DatabaseX]
+# DSN = "file:gugu.db?cache=shared" # sqlite
+# DSN = "/gugu?interpolateParams=True&loc=Local&parseTime=True&time_zone=%27Asia%2FShanghai%27" # mysql
+Debug = true
+MaxOpenConns = 4
+MaxIdleConns = 4

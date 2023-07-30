@@ -1,9 +1,12 @@
 package main
 
 import (
+	"fmt"
 	"os"
 
 	apiv1 "github.com/choyri/gugu/api/v1"
+	"github.com/choyri/gugu/config"
+	"github.com/choyri/gugu/internal/databasex"
 	"github.com/choyri/gugu/internal/grpcx"
 	"github.com/choyri/gugu/internal/logx"
 	"github.com/choyri/gugu/internal/signals"
@@ -12,24 +15,35 @@ import (
 	"golang.org/x/exp/slog"
 )
 
+var (
+	version = "dev"
+)
+
 func main() {
-	_, err := logx.NewLogger(logx.Config{Level: "DEBUG", Development: true}, slog.String("app", "gugu"))
-	if err != nil {
-		slog.Error("new logger failed", logx.Error(err))
-		os.Exit(1)
-	}
+	conf, err := config.Init()
+	checkErr(err)
 
-	ctx := signals.SetupSignalHandler()
+	logger, err := logx.Init(conf.LogX, slog.String("app.version", version))
+	checkErr(err)
 
-	userSvr := user.NewServer()
+	ctx := logx.WithContext(signals.SetupSignalHandler(), logger)
 
-	err = grpcx.NewGateway("localhost:8080").
+	db, err := databasex.New(ctx, conf.DatabaseX)
+	checkErr(err)
+
+	userSvr := user.NewServer(user.NewDBRepo(db))
+
+	err = grpcx.NewGateway(conf.ListenAddr).
 		RegisterServiceHandlerServer(func(mux *runtime.ServeMux) {
 			_ = apiv1.RegisterUserServiceHandlerServer(nil, mux, userSvr)
 		}).
 		Run(ctx)
+	checkErr(err)
+}
+
+func checkErr(err error) {
 	if err != nil {
-		slog.Error("gateway run failed", logx.Error(err))
+		_, _ = fmt.Fprintln(os.Stderr, "GuGu:", err)
 		os.Exit(1)
 	}
 }

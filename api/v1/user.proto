@@ -11,7 +11,7 @@ import "google/protobuf/timestamp.proto";
 option go_package = "github.com/choyri/gugu/api/v1;apiv1";
 
 service UserService {
-  rpc ListUsers(ListUsersRequest) returns (ListUsersResponse) {
+  rpc ListUsers(google.protobuf.Empty) returns (ListUsersResponse) {
     option (google.api.http) = {
       get: "/v1/users"
     };
@@ -36,17 +36,11 @@ service UserService {
       body: "user"
     };
   }
-
-  rpc DeleteUser(DeleteUserRequest) returns (google.protobuf.Empty) {
-    option (google.api.http) = {
-      delete: "/v1/{name=users/*}"
-    };
-  }
 }
 
 message User {
   string name = 1 [(google.api.field_behavior) = OUTPUT_ONLY];
-  string uid = 2 [(google.api.field_behavior) = OUTPUT_ONLY];
+  string user_id = 2 [(google.api.field_behavior) = OUTPUT_ONLY];
   string display_name = 3 [(google.api.field_behavior) = OPTIONAL];
   string password = 4 [(google.api.field_behavior) = INPUT_ONLY];
 
@@ -54,14 +48,8 @@ message User {
   google.protobuf.Timestamp update_time = 12 [(google.api.field_behavior) = OUTPUT_ONLY];
 }
 
-message ListUsersRequest {
-  int32 page_size = 1;
-  string page_token = 2;
-}
-
 message ListUsersResponse {
   repeated User users = 1;
-  string next_page_token = 2;
 }
 
 message GetUserRequest {
@@ -69,7 +57,8 @@ message GetUserRequest {
 }
 
 message CreateUserRequest {
-  User user = 1 [(google.api.field_behavior) = REQUIRED];
+  string user_id = 1 [(google.api.field_behavior) = REQUIRED];
+  User user = 2 [(google.api.field_behavior) = REQUIRED];
 }
 
 message UpdateUserRequest {

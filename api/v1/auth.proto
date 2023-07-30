@@ -1,0 +1,31 @@
+syntax = "proto3";
+
+package choyri.gugu.v1;
+
+import "google/api/annotations.proto";
+import "google/api/field_behavior.proto";
+import "google/protobuf/empty.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+import "api/v1/user.proto";
+
+option go_package = "github.com/choyri/gugu/api/v1;apiv1";
+
+service AuthService {
+  rpc CreateSession(CreateSessionRequest) returns (Session) {
+    option (google.api.http) = {
+      post: "/v1/sessions"
+      body: "*"
+    };
+  }
+}
+
+message Session {
+  User user = 1 [(google.api.field_behavior) = OUTPUT_ONLY];
+  string token = 2 [(google.api.field_behavior) = OUTPUT_ONLY];
+}
+
+message CreateSessionRequest {
+  string user_id = 1 [(google.api.field_behavior) = REQUIRED];
+  string password = 2 [(google.api.field_behavior) = REQUIRED];
+}
