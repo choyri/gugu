@@ -9,11 +9,12 @@ import (
 	"github.com/uptrace/bun"
 	"github.com/uptrace/bun/dialect/sqlitedialect"
 	"github.com/uptrace/bun/driver/sqliteshim"
+	"golang.org/x/exp/slog"
 )
 
 func NewSQLite(ctx context.Context, conf Config) (*bun.DB, error) {
 	logger := logx.FromContext(ctx)
-	logger.Debug("prepare open sqlite db")
+	logger.Debug("prepare open sqlite db", slog.String("dsn", conf.DSN))
 
 	stdDB, err := sql.Open(sqliteshim.ShimName, conf.DSN)
 	if err != nil {

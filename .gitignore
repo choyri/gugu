@@ -5,3 +5,5 @@
 
 *.pb.go
 *.pb.gw.go
+
+*.db
