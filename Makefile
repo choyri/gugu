@@ -17,7 +17,7 @@ proto:
             --go-grpc_opt paths=source_relative \
         --grpc-gateway_out ./api \
             --grpc-gateway_opt paths=source_relative \
-        api/v*/*.proto
+        api/*/v*/*.proto
 
 go-build:
 	go build -o bin/ -trimpath -ldflags="$(GO_LDFLAGS)"

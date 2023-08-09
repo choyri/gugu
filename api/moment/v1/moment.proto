@@ -8,7 +8,7 @@ import "google/protobuf/empty.proto";
 import "google/protobuf/field_mask.proto";
 import "google/protobuf/timestamp.proto";
 
-option go_package = "github.com/choyri/gugu/api/v1;apiv1";
+option go_package = "github.com/choyri/gugu/moment/api/v1;momentpb";
 
 service MomentService {
   rpc ListMoments(ListMomentsRequest) returns (ListMomentsResponse) {
@@ -47,9 +47,10 @@ service MomentService {
 message Moment {
   enum Visibility {
     VISIBILITY_UNSPECIFIED = 0;
-    PRIVATE = 1;
-    INTERNAL = 2;
-    PUBLIC = 3;
+    ENCRYPT = 1;
+    PRIVATE = 2;
+    INTERNAL = 3;
+    PUBLIC = 4;
   }
 
   string name = 1 [(google.api.field_behavior) = OUTPUT_ONLY];

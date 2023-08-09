@@ -4,12 +4,9 @@ package choyri.gugu.v1;
 
 import "google/api/annotations.proto";
 import "google/api/field_behavior.proto";
-import "google/protobuf/empty.proto";
-import "google/protobuf/field_mask.proto";
-import "google/protobuf/timestamp.proto";
-import "api/v1/user.proto";
+import "user/v1/user.proto";
 
-option go_package = "github.com/choyri/gugu/api/v1;apiv1";
+option go_package = "github.com/choyri/gugu/api/auth/v1;authpb";
 
 service AuthService {
   rpc CreateSession(CreateSessionRequest) returns (Session) {

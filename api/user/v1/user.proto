@@ -8,7 +8,7 @@ import "google/protobuf/empty.proto";
 import "google/protobuf/field_mask.proto";
 import "google/protobuf/timestamp.proto";
 
-option go_package = "github.com/choyri/gugu/api/v1;apiv1";
+option go_package = "github.com/choyri/gugu/api/user/v1;userpb";
 
 service UserService {
   rpc ListUsers(google.protobuf.Empty) returns (ListUsersResponse) {
@@ -40,9 +40,8 @@ service UserService {
 
 message User {
   string name = 1 [(google.api.field_behavior) = OUTPUT_ONLY];
-  string user_id = 2 [(google.api.field_behavior) = OUTPUT_ONLY];
-  string display_name = 3 [(google.api.field_behavior) = OPTIONAL];
-  string password = 4 [(google.api.field_behavior) = INPUT_ONLY];
+  string display_name = 2 [(google.api.field_behavior) = OPTIONAL];
+  string password = 3 [(google.api.field_behavior) = INPUT_ONLY];
 
   google.protobuf.Timestamp create_time = 11 [(google.api.field_behavior) = OUTPUT_ONLY];
   google.protobuf.Timestamp update_time = 12 [(google.api.field_behavior) = OUTPUT_ONLY];
